@@ -50,9 +50,51 @@ int change(int amount, vector<int> coins) {
     return dp[amount];
 }
 
+/**********需要打印序列*************/
+vector<int> printChange(int amount, vector<int> coins) {
+    vector<int> dp(amount + 1, -1);
+    vector<vector<int>> path(amount + 1);
+    dp[0] = 0; // 金额为0时，零钱数也是0
+    for (std::size_t i = 1; i <= amount; ++i) {
+
+        int min = -1;
+        int index = -1;
+        
+        /**
+         * 这里的判断语句属实有点烦
+         * 原本合并的情形这里必须拆分开来
+         */
+        for (const auto& c : coins)
+            if (i - c >= 0)
+                if (min < 0)
+                {
+                    min = dp[i-c];
+                    if (min >= 0)
+                        index = i-c;
+                } else
+                    if (dp[i-c] < min) {
+                        min = dp[i-c];
+                        index = i-c;
+                    }
+                
+        
+        dp[i] = min < 0 ? -1 : min + 1;
+        if (index >= 0) {
+            path[i] = path[index];
+            path[i].push_back(i - index);
+        }
+    }   
+
+    return path[amount];
+}
+/**********需要打印序列*************/
+
 int main() {
-    int amount = 6;
+    int amount = 11;
     vector<int> coins { 1, 2, 5 };
-    std::cout << "when amount = " << amount << ", coins = [1, 2, 5]\n" << "ans is: " << change(amount, coins) << std::endl;
+    // std::cout << "when amount = " << amount << ", coins = [1, 2, 5]\n" << "ans is: " << change(amount, coins) << std::endl;
+    vector<int> path = printChange(amount, coins);
+    for (auto x : path)
+        std::cout << x << std::endl;
 }
 
