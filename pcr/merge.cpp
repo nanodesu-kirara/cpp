@@ -19,7 +19,7 @@ inline size_t piao(size_t damage) {
 }
 
 inline size_t average_damage(size_t damage, size_t time = 90) {
-    return static_cast<size_t>(damage / time)
+    return static_cast<size_t>(damage / time);
 }
 
 
