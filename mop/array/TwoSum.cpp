@@ -12,7 +12,7 @@ using std::unordered_set;
 
 void HashTable(vector<int>&, int);
 
-bool DivideSearch(vector<int>&, int);
+bool BinarySearch(vector<int>&, int);
 
 void TwoSum(vector<int>&, int);
 
@@ -49,7 +49,7 @@ void TwoSum(vector<int>& nums, int sum)
 
     for (auto x : nums)
     {
-        if (DivideSearch(nums, sum-x))
+        if (BinarySearch(nums, sum-x))
         {
             printf("%d + %d = %d\n", x, sum-x, sum);
             return;
@@ -87,7 +87,7 @@ void twoSumP(vector<int>& nums, int sum)
 }
 
 
-bool DivideSearch(vector<int>& nums, int target)
+bool BinarySearch(vector<int>& nums, int target)
 {
     if (!nums.size())
         return false;
