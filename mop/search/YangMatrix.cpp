@@ -25,9 +25,12 @@ bool DivideSearch(const vector<vector<int>>&, int, const SubMatrix&);
 
 bool YoungMatrix(const vector<vector<int>>&, int);
 
+// 寻找中位数值, 矩阵中有相同元素时有bug
+int MedianSearch(const vector<vector<int>>&);
+
 int main()
 {
-    vector<vector<int>> matrix{vector<int>{1,2,8,9},vector<int>{2,4,9,12}};//,vector<int>{4,7,10,13},vector<int>{6,8,11,15}};
+    vector<vector<int>> matrix{vector<int>{1,2,8,9},vector<int>{2,4,9,12},vector<int>{4,7,10,13},vector<int>{6,8,11,15}};
     int target = 9;
     // bool flag = DivideSearch(matrix, target, SubMatrix{location{0,0}, location{0,3}});
     bool flag = YoungMatrix(matrix, target);
@@ -125,4 +128,86 @@ bool YoungMatrix(const vector<vector<int>>& matrix, int target)
     }
 
     return false;
+}
+
+// 返回比target值小的左半边元素的数目
+int lowerCount(const vector<vector<int>>& matrix, int target)
+{
+    int x = 0;
+    int y = matrix[0].size() - 1;
+
+    int val;
+    int count = 0;
+    while (x < matrix.size() && y >= 0)
+    {
+        val = matrix[x][y];
+        if (val < target)
+        {
+            count += (y + 1);
+            ++x;
+        }
+        else
+        {
+            // 即使 val == target 也要继续
+            --y;
+        }
+    }
+
+    return count;
+}
+
+int MedianSearch(const vector<vector<int>>& matrix)
+{
+    int k = matrix.size() * matrix[0].size() / 2;
+    int low = matrix[0][0];
+    int high = matrix[matrix.size()-1][matrix[0].size()-1];
+
+    int mid, count;
+    while (low <= high)
+    {
+        mid = (low + high) >> 1;
+        count = lowerCount(matrix, mid);
+        std::cout << "low: " << low << std::endl;
+        std::cout << "high: " << high << std::endl;
+        std::cout << "mid: " << mid << std::endl;
+        std::cout << "lowerCount: " << count << std::endl;
+
+        if (lowerCount(matrix, mid) < k)
+            low = mid+1;
+        else if (lowerCount(matrix, mid) > k)
+            high = mid-1;
+        else
+            break;
+    }
+
+    
+    // 找到最接近mid的值
+
+    int x = 0;
+    int y = matrix[0].size() - 1;
+
+    int val;
+
+    bool flag = matrix[x][y] > mid;
+    
+    while (x < matrix.size() && y >= 0)
+    {
+        val = matrix[x][y];
+        if (val < mid)
+        {
+            if (flag)
+                return matrix[x][y];
+            ++x;
+        }
+        else if (val > mid)
+        {
+            if (!flag)
+                return matrix[x][y];
+            --y;
+        }
+        else
+            return mid;
+    }
+
+    return mid;
 }
