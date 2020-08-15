@@ -91,7 +91,7 @@ int DuplicateNumber(const std::vector<int>& nums)
             return -1; 
     }
 
-    // l=m=r
+    // l = m = r
     if (l == r)
         if (countRange(nums, l, l+((r-l)>>1)) > 1)
                 return l;
