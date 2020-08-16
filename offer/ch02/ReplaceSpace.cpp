@@ -1,7 +1,7 @@
 /**
  * 5.实现一个函数
  * 将字符串中的空格替换成"%20"
- * 要求：修改原字符串
+ * 要求：修改原字符串, 如果是char* 又不重新开辟内存，就有越界的风险
  * 长度会变化，思路是需要减少移动次数
  */
 #include<string>
@@ -18,7 +18,7 @@ void ReplaceSpace(std::string& str)
             ++spaceCount;
 
     // 根据空格数量重新分配字符串容量和大小
-    str.reserve(str.capacity() + 2 * spaceCount);
+    // str.reserve(str.capacity() + 2 * spaceCount);
     str.resize(len + 2 * spaceCount);
 
     // 从尾到头移动字符串，末尾的'\0'也算进去了
